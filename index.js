@@ -1,4 +1,7 @@
-const Joi = require("joi"); // for validation
+const express = require("express");
+const app = express();
+app.use(express.json());
+const Joi = require("joi");
 const fs = require("fs");
 const util = require("util");
 const exec = util.promisify(require('child_process').exec);
@@ -14,9 +17,6 @@ function validateSubmission(body) {
     });
     return schema.validate(body);
 }
-
-
-
 
 let countSubmissions = 0;
 const submissionsDirectory = "submissions/";
@@ -85,3 +85,24 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     }
 }
 
+app.post("/api/runCode", async (req, res) => {
+    try{
+        const {error} = validateSubmission(req.body);
+        if(error){
+            return res.status(400).send(error.details[0].message);
+        }
+        const results = await runCPPCode(req.body.sourceCode, req.body.input, req.body.timeLimit);
+        res.status(200).send(results);
+    }
+
+    catch(err){
+        if(err){
+            console.error(err);
+            res.status(500).send({message : "Sorry We are facing an internal error! please try again later"});
+        }
+    }
+});
+
+const PORT = 3000;
+
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
