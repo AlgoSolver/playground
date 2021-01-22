@@ -106,3 +106,9 @@ app.post("/api/runCode", async (req, res) => {
 const PORT = 3000;
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+const data = require('./data.json');
+
+app.get('/test', (req, res) => {
+    res.send(data);
+});
