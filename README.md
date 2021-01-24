@@ -1,4 +1,6 @@
 # playground
+  ![Success](https://img.shields.io/badge/GitHub_Actions-CI/CD-success.svg?logo=github&logoColor=white)
+  
 the API for running code submitted by user.
 currently supports C++ only
 
@@ -34,3 +36,5 @@ response JSON object with the folowing atributes:
     "usedTime": 5
 }
 ```
+  # Production
+  [AlgoSolver-playground](https://algosolver-playground.herokuapp.com/) 
