@@ -107,8 +107,8 @@ const PORT = 3000;
 
 app.listen(process.env.PORT || 3000, () => console.log(`Listening on port ${PORT}`));
 
-const data = require('./data.json');
-
+// just for testing
+const data = require('./data.json'); 
 app.get('/test', (req, res) => {
     res.send(data);
 });
