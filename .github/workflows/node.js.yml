@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ test-1 ]
+    branches: [ master ]
   pull_request:
-    branches: [ test-1 ]
+    branches: [ master ]
     
 jobs:
   build:
@@ -66,3 +66,5 @@ jobs:
   #     run: |
   #       sudo npm install -g firebase-tools
   #       firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+
+  # Deploying running on herouk
