@@ -4,18 +4,19 @@
 ***The API for running code submitted by user, currently supports C++ only***
 
 # calling the API 
-send post request to http://localhost:3000/api/runCode with Body as JSON  
+***send*** post request to http://localhost:3000/api/runCode with Body as JSON  
 - Attributes:  
   1. lang => the language of the source code currently we support only "C++"  
   2. timeLimit => the limit on time to run your code in seconds.  
   3. sourceCode => the source code you wan't to run.  
   4. input => the input to the program.  
   
-response JSON object with the folowing atributes:
-  codeStatus: "Accepted" or "Compilation Error!" or "Run Time Error!" or "Time Limit Exceeded!"
-  other attributes only if codeStatus is "Accepted"
-  output => the output of you program.
-  usedTime => the time your program used in ms.
+***response*** JSON object with the folowing 
+- Atributes:
+  1. codeStatus: "Accepted" or "Compilation Error!" or "Run Time Error!" or "Time Limit Exceeded!"
+  2. other attributes only if codeStatus is "Accepted"
+  3. output => the output of you program.
+  4. usedTime => the time your program used in ms.
   
 # example request body: 
 ```json
