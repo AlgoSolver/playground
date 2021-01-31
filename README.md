@@ -1,16 +1,15 @@
 # playground
   ![Success](https://img.shields.io/badge/GitHub_Actions-CI/CD-success.svg?logo=github&logoColor=white)
   
-the API for running code submitted by user.
-currently supports C++ only
+***The API for running code submitted by user, currently supports C++ only***
 
 # calling the API 
 send post request to http://localhost:3000/api/runCode with Body as JSON  
-attributes :  
-  lang => the language of the source code currently we support only "C++"  
-  timeLimit => the limit on time to run your code in seconds.  
-  sourceCode => the source code you wan't to run.  
-  input => the input to the program.  
+- Attributes:  
+  1. lang => the language of the source code currently we support only "C++"  
+  2. timeLimit => the limit on time to run your code in seconds.  
+  3. sourceCode => the source code you wan't to run.  
+  4. input => the input to the program.  
   
 response JSON object with the folowing atributes:
   codeStatus: "Accepted" or "Compilation Error!" or "Run Time Error!" or "Time Limit Exceeded!"
@@ -65,4 +64,8 @@ response will be the same as for calling the runCode api.
 ```
 
 # Production
-  [AlgoSolver-playground](https://algosolver-playground.herokuapp.com/) 
+  [AlgoSolver-playground](https://algosolver-playground.herokuapp.com/)
+  ### Docker
+  ```
+  ./run_docker.sh
+  ```
