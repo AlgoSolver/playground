@@ -7,7 +7,7 @@ services:
       - .:/src
     command: npm start
     ports:
-      - "3000:3000"
+      - "1234:3000"
     environment:
       NODE_ENV: development
       DEBUG: algosolver-playground:*
