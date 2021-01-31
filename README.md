@@ -36,5 +36,33 @@ response JSON object with the folowing atributes:
     "usedTime": 5
 }
 ```
-  # Production
+
+# running checker code
+send post request to http://localhost:3000/api/runChecker with body containing the checker source code, input, userOutput, juryOutput
+note source code should read input, userOutput, juryOutput from files with same name.
+response will be JSON object
+codeStatus: "Accepted" or "Compilation Error!" or "Run Time Error!" or "Time Limit Exceeded!"
+response will be the same as for calling the runCode api.
+
+# Example Checker Request
+```json
+{
+    "lang": "C++",
+    "sourceCode": "#include<bits/stdc++.h>\nusing namespace std;\nvector < string > readFile(const string &fileName){\n ifstream file(fileName);\n  string s;\n vector < string > lines;\n  while(file >> s){\n     lines.push_back(s);\n   }\n return lines;\n}\n\nint main(){\n   vector < string > jury = readFile(\"juryOutput\");\n    vector < string > user = readFile(\"userOutput\");\n    if(jury == user){\n     cout << \"Accepted\";\n }\n else{\n     cout << \"WA\";\n }\n   return 0;\n}",
+    "input" : "5",
+    "userOutput" : "1\n2\n3\n4\n5",
+    "juryOutput" : "1\n2\n3\n4\n7"
+}
+```
+
+#Response Body 
+```json
+{
+    "codeStatus": "Accepted",
+    "output": "WA",
+    "usedTime": 4
+}
+```
+
+# Production
   [AlgoSolver-playground](https://algosolver-playground.herokuapp.com/) 
