@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:alpine
+FROM s403o/algosolver-playground:dev
 
 # set working directory
 RUN mkdir -p /app
