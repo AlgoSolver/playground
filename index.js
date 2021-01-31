@@ -21,7 +21,7 @@ function validateSubmission(body) {
 function validateChecker(body) {
     const schema = Joi.object({
         lang: Joi.string().equal("C++").required(),// programming lanugage initially we support only C++
-        timeLimit: Joi.number().min(.5).max(10).required(),// the timelimit to run code in seconds
+        timeLimit: Joi.number().min(.5).max(10),// the timelimit to run code in seconds
         memoryLimit: Joi.number().min(1024).max(1024*1024), // number of KBs maximum is 1G isn't supported initially
         sourceCode: Joi.string().max(100000).required(), // the source code to run
         input: Joi.string().max(1000000).required(),// the input to the program
@@ -29,6 +29,7 @@ function validateChecker(body) {
         userOutput: Joi.string().max(1000000).required(),// the answer from user
         juryOutput: Joi.string().max(1000000).required(),// the expected answer from jury
     });
+    return schema.validate(body);
 }
 
 let countSubmissions = 0;
@@ -98,6 +99,67 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     }
 }
 
+const checkersDirectory = "checkers/";
+let countCheckers = 0;
+
+
+if(!fs.existsSync(checkersDirectory))// create a directory to store submissions
+    fs.mkdirSync(checkersDirectory);
+
+
+
+async function runCPPChecker(sourceCode, input, userOutput, juryOutput, timeLimit = 5, memoryLimit = 512) {
+    const myDirectory = `${checkersDirectory}${countCheckers++}/`;// the directory of storing submission data
+    const codePath = `${myDirectory}checker.cpp`;
+    const checkerProgram = `${myDirectory}checker`;
+    if(!fs.existsSync(myDirectory))// create the directory to run my code
+        fs.mkdirSync(myDirectory);
+
+    try{
+        await writeFile(codePath, sourceCode);
+        await writeFile(`${myDirectory}input`, input);
+        await writeFile(`${myDirectory}userOutput`, userOutput);
+        await writeFile(`${myDirectory}juryOutput`, juryOutput);
+    }
+    catch(err){
+        if(err){
+            console.error(err);// log the error on the system
+            throw err;
+        }
+    }
+    
+    try{
+        // Compile the C++ Code with a maximum of 3 secnods in compilation
+        await exec(`timeout 3 g++ ${codePath} -o ${checkerProgram}`);// compile
+    }
+    catch(err) {
+        if(err){
+            // status is 200 as no errors occured
+            return {codeStatus : "Compilation Error!"};
+        }
+    }
+
+    const time_before = Date.now();
+    try{
+        const {stdout} = await exec(`
+            cd ${myDirectory}
+            timeout ${parseFloat(timeLimit)} ./checker`);
+        const time_after = Date.now();
+        const used_time = (time_after - time_before);
+        return {codeStatus : "Accepted", output : stdout, usedTime : used_time};
+    }
+    catch(err){
+        const time_after = Date.now();
+        const used_time = (time_after - time_before);
+        if(used_time > timeLimit * 1000){
+            return {codeStatus: "Time Limit Exceeded!"};
+        }
+        else {
+            return {codeStatus: "Run Time Error!"};
+        }
+    }
+}
+
 app.post("/api/runCode", async (req, res) => {
     try{
         const {error} = validateSubmission(req.body);
@@ -108,6 +170,23 @@ app.post("/api/runCode", async (req, res) => {
         res.status(200).send(results);
     }
 
+    catch(err){
+        if(err){
+            console.error(err);
+            res.status(500).send({message : "Sorry We are facing an internal error! please try again later"});
+        }
+    }
+});
+
+app.post("/runChecker", async (req, res) => {
+    try{
+        const {error} = validateChecker(req.body);
+        if(error){
+            return res.status(400).send(error.details[0].message);
+        }
+        const results = await runCPPChecker(req.body.sourceCode, req.body.input, req.body.userOutput, req.body.juryOutput, req.body.timeLimit, req.body.memoryLimit);
+        res.status(200).send(results);
+    }
     catch(err){
         if(err){
             console.error(err);
