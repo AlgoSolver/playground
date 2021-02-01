@@ -67,7 +67,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     catch(err) {
         if(err){
             // status is 200 as no errors occured
-            return {codeStatus : "Compilation Error!"};
+            return {codeStatus : "Compilation Error"};
         }
     }
 
@@ -82,7 +82,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
         // used time is in ms while timeLimit is in seconds
         if(used_time > timeLimit * 1000){
             console.log("used time :", used_time);
-            return {codeStatus: "Time Limit Exceeded!"};
+            return {codeStatus: "Time Limit Exceeded"};
         }
         return {codeStatus : "Accepted", output : stdout, usedTime : used_time};
         // we should decide whether we will remove the sumbission code after or not
@@ -91,10 +91,10 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
         const time_after = Date.now();
         const used_time = (time_after - time_before);
         if(used_time > timeLimit * 1000){
-            return {codeStatus: "Time Limit Exceeded!"};
+            return {codeStatus: "Time Limit Exceeded"};
         }
         else {
-            return {codeStatus: "Run Time Error!"};
+            return {codeStatus: "Run Time Error"};
         }
     }
 }
@@ -135,7 +135,7 @@ async function runCPPChecker(sourceCode, input, userOutput, juryOutput, timeLimi
     catch(err) {
         if(err){
             // status is 200 as no errors occured
-            return {codeStatus : "Compilation Error!"};
+            return {codeStatus : "Compilation Error"};
         }
     }
 
@@ -152,7 +152,7 @@ async function runCPPChecker(sourceCode, input, userOutput, juryOutput, timeLimi
         const time_after = Date.now();
         const used_time = (time_after - time_before);
         if(used_time > timeLimit * 1000){
-            return {codeStatus: "Time Limit Exceeded!"};
+            return {codeStatus: "Time Limit Exceeded"};
         }
         else {
             return {codeStatus: "Run Time Error!"};
@@ -178,7 +178,7 @@ app.post("/api/runCode", async (req, res) => {
     }
 });
 
-app.post("/runChecker", async (req, res) => {
+app.post("/api/runChecker", async (req, res) => {
     try{
         const {error} = validateChecker(req.body);
         if(error){
