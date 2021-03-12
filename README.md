@@ -66,7 +66,8 @@ response will be the same as for calling the runCode api.
 
 # Production
   [AlgoSolver-playground](https://algosolver-playground.herokuapp.com/)
-  ### Docker
+  ### Run Docker
   ```
   ./run_docker.sh
   ```
+***After Running Container You Should Listening At*** [http://0.0.0.0:1234/](http://0.0.0.0:1234/)
