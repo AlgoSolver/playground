@@ -1,12 +1,15 @@
 # pull official base image
-FROM node:alpine
+FROM ubuntu
+
+# install node
+RUN apt update && apt install nodejs && apt install npm
+
+#install c++
+RUN apt update && apt install g++
 
 # set working directory
 RUN mkdir -p /app
 WORKDIR /app
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
 COPY package*.json ./
