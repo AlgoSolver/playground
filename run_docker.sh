@@ -7,4 +7,4 @@ docker run -it --rm \
 -v /app/node_modules \
 -p 1234:3000 \
 -e CHOKIDAR_USEPOLLING=true \
-s403o/algosolver-playground:dev
+s403o/playground
