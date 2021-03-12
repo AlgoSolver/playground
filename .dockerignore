@@ -3,3 +3,9 @@ node_modules
 npm-debug.log
 submissions
 checkers
+.gitignore
+Dockerfile*
+docker-compose*
+README.md
+LICENSE
+.vscode
