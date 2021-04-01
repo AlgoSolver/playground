@@ -23,6 +23,7 @@
   "homepage": "https://github.com/AlgoSolver/playground#readme",
   "dependencies": {
     "child_process": "^1.0.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "0.0.2",
     "joi": "^17.3.0",

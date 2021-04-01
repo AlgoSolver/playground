@@ -1,5 +1,8 @@
 const express = require("express");
+const cors = require('cors')
+
 const app = express();
+app.use(cors())
 app.use(express.json());
 const Joi = require("joi");
 const fs = require("fs");
@@ -43,7 +46,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     const mySubmission = countSubmissions++;// current submission number not same as code ID
     const myDirectory = `${submissionsDirectory}${mySubmission}/`;// the directory of storing submission data
     const codePath = `${myDirectory + mySubmission}.cpp`;
-    const programPath = `${myDirectory + mySubmission}`; 
+    const programPath = `${myDirectory + mySubmission}`;
     const inputFilePath = `${myDirectory + mySubmission}.in`;
 
     if(!fs.existsSync(myDirectory))// create the directory to run my code
@@ -127,7 +130,7 @@ async function runCPPChecker(sourceCode, input, userOutput, juryOutput, timeLimi
             throw err;
         }
     }
-    
+
     try{
         // Compile the C++ Code with a maximum of 3 secnods in compilation
         await exec(`timeout 3 g++ ${codePath} -o ${checkerProgram}`);// compile
@@ -200,7 +203,7 @@ const PORT = process.env.PORT || 3000;
 app.listen( PORT, () => console.log(`Listening on port ${PORT}`));
 
 // just for testing
-const data = require('./data.json'); 
+const data = require('./data.json');
 app.get('/test', (req, res) => {
     res.send(data);
 });
