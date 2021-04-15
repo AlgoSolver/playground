@@ -38,20 +38,20 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Analyze User Activity
-      id: analyze_user_activity
-      uses: peter-murray/inactive-users-action@v1
-      with:
-        token: ${{ secrets.ORGANIZATION_AND_REPO_ACCESS_TOKEN }}
-        organization: AlgoSolver
-        activity_days: 90
+#     - name: Analyze User Activity
+#       id: analyze_user_activity
+#       uses: peter-murray/inactive-users-action@v1
+#       with:
+#         token: ${{ secrets.ORGANIZATION_AND_REPO_ACCESS_TOKEN }}
+#         organization: AlgoSolver
+#         activity_days: 90
 
-    - name: Save User Activity Report
-      uses: actions/upload-artifact@v2
-      with:
-        name: reports
-        path: |
-          ${{ steps.analyze_user_activity.outputs.report_csv }}
+#     - name: Save User Activity Report
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: reports
+#         path: |
+#           ${{ steps.analyze_user_activity.outputs.report_csv }}
           
     # - name: Build
     #   run: npm run build
