@@ -1,5 +1,5 @@
 # pull official base image
-FROM ubuntu
+FROM ubuntu:groovy-20210325
 
 # install node
 RUN apt update && apt install -y nodejs && apt install -y npm
