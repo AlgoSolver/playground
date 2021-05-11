@@ -70,7 +70,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     catch(err) {
         if(err){
             // status is 200 as no errors occured
-            return {codeStatus : "Compilation Error"};
+            return {codeStatus : "Compilation Error", errorMessage : err.stderr};
         }
     }
 
@@ -97,7 +97,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
             return {codeStatus: "Time Limit Exceeded"};
         }
         else {
-            return {codeStatus: "Run Time Error"};
+            return {codeStatus: "Run Time Error", errorMessage : err.stderr};
         }
     }
 }
