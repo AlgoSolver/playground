@@ -1,11 +1,8 @@
 # pull official base image
-FROM ubuntu:20.10
+FROM alpine
 
 # install node
-RUN apt update && apt install -y nodejs && apt install -y npm
-
-#install c++
-RUN apt update && apt install -y g++
+RUN apk add --update nodejs nodejs-npm g++
 
 # set working directory
 RUN mkdir -p /app
