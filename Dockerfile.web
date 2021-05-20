@@ -3,20 +3,19 @@ FROM s403o/playground
 
 # set working directory
 #RUN mkdir /app
-RUN groupadd -r secapp && useradd -r -s /bin/false -g secapp secapp
+RUN addgroup -S test && adduser -S semo -G test
 WORKDIR /app
-
 # install app dependencies
 COPY package*.json ./
 RUN npm install
 
 # add app
 COPY . ./
-RUN chown -R secapp:secapp /app
+RUN chown -R test:semo /app
 
 # listener port at runtime
 EXPOSE 3000
 
 # start app
-USER secapp
+USER semo
 CMD ["node", "index.js"]
