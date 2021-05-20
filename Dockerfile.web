@@ -11,7 +11,7 @@ RUN npm install
 
 # add app
 COPY . ./
-RUN chown -R test:semo /app
+RUN chown -R semo:test /app
 
 # listener port at runtime
 EXPOSE 3000
