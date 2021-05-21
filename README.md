@@ -1,5 +1,5 @@
 # playground
-  ![Success](https://img.shields.io/badge/GitHub_Actions-CI/CD-success.svg?logo=github&logoColor=white)
+  [![CI](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml)  [![Docker Image CI/CD](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml)
   
 ***The API for running code submitted by user, currently supports C++ only***
 
