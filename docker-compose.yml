@@ -1,13 +1,38 @@
 version: '3.9'
-services:
-  web:
-    build:
-      context: ./
-    volumes:
-      - .:/src
-    command: npm start
-    ports:
-      - "1234:3000"
-    environment:
-      NODE_ENV: development
-      DEBUG: algosolver-playground:*
+
+services: 
+    nginx_lb:
+        image: s403o/playground-lb
+        ports: 
+            - 8080:8080
+
+    # server1: disabled till fix it
+    #     image: registry.heroku.com/algosolver-playground/web
+    #     environment:
+    #         - SERVER_ID=1
+
+    server2:
+        image: registry.heroku.com/algosolver-playground2/web
+        env_file: .env
+        environment:
+            - SERVER_ID=2
+
+    server3:
+        image: registry.heroku.com/algosolver-playground3/web
+        environment:
+            - SERVER_ID=3
+
+    server4:
+        image: registry.heroku.com/algosolver-playground4/web
+        environment:
+            - SERVER_ID=4
+
+    server5:
+        image: registry.heroku.com/algosolver-playground5/web
+        environment:
+            - SERVER_ID=5
+
+    server6:
+        image: registry.heroku.com/algosolver-playground6/web
+        environment:
+            - SERVER_ID=6
