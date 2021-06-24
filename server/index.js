@@ -200,9 +200,10 @@ app.post("/api/runChecker", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen( PORT, () => console.log(`Listening on port ${PORT}`));
+app.listen( PORT, () => console.log(`App ${SERVER_ID} => Up and running on ${PORT}`));
 
 // just for testing
+const SERVER_ID = process.env.SERVER_ID;
 const data = require('./data.json');
 app.get('/test', (req, res) => {
     res.send(data);
