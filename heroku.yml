@@ -1,4 +1,5 @@
 build:
   docker:
-gitrun:
-  web: node /server/index.js
+    web: /server/Dockerfile.web
+run:
+  web: node index.js
