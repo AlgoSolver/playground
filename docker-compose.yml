@@ -13,7 +13,6 @@ services:
 
     server2:
         image: registry.heroku.com/algosolver-playground2/web
-        env_file: .env
         environment:
             - SERVER_ID=2
 
