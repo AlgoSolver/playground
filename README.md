@@ -1,5 +1,5 @@
 # playground
-  [![CI](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml)  [![Docker Image CI/CD](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml)
+  [![CI](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml)  [![Docker Image CI/CD](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml) [![Codeship Status for AlgoSolver/playground](https://app.codeship.com/projects/17efac47-03ad-4dcb-95dc-4d5a7643a8e8/status?branch=master)](https://app.codeship.com/projects/447851)
   
 ***The API for running code submitted by user, currently supports C++ only***
 
