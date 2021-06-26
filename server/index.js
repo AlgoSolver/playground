@@ -57,8 +57,9 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
         fs.mkdirSync(myDirectory);
 
     try{
-        await writeFile(codePath, sourceCode);// write the code to codePath
-        await writeFile(inputFilePath, input);// write input to input path
+        await writeFile(codePath, sourceCode);// write the code to codePath.
+        await writeFile(inputFilePath, input);// write input to input path.
+        await writeFile(outputFilePath, " ");// write any text to create file.
     }
     catch(err){
         if(err){
