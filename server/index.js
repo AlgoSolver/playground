@@ -9,10 +9,12 @@ const fs = require("fs");
 const util = require("util");
 const exec = util.promisify(require('child_process').exec);
 const writeFile = util.promisify(fs.writeFile);
+const readFile = require("fs/promises").readFile;
+
 
 function validateSubmission(body) {
     const schema = Joi.object({
-        lang: Joi.string().equal("C++").required(),// programming lanugage initially we support only C++
+        lang: Joi.string().equal("C++"),// programming lanugage initially we support only C++
         timeLimit: Joi.number().min(.5).max(10).required(),// the timelimit to run code in seconds
         memoryLimit: Joi.number().min(1024).max(1024*1024), // number of KBs maximum is 1G isn't supported initially
         sourceCode: Joi.string().max(100000).required(), // the source code to run
@@ -30,7 +32,7 @@ function validateChecker(body) {
         input: Joi.string().max(1000000).required(),// the input to the program
         // all obove is the same as problems.
         userOutput: Joi.string().max(1000000).required(),// the answer from user
-        juryOutput: Joi.string().max(1000000).required(),// the expected answer from jury
+        juryOutput: Joi.string().max(1000000).required()// the expected answer from jury
     });
     return schema.validate(body);
 }
@@ -48,6 +50,8 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     const codePath = `${myDirectory + mySubmission}.cpp`;
     const programPath = `${myDirectory + mySubmission}`;
     const inputFilePath = `${myDirectory + mySubmission}.in`;
+    const outputFilePath = `${myDirectory + mySubmission}.out`;
+    
 
     if(!fs.existsSync(myDirectory))// create the directory to run my code
         fs.mkdirSync(myDirectory);
@@ -78,7 +82,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     // give extra .5 second to make sure that the exit was made by TLE not RTE
     try{
         console.log("Time limit :", timeLimit);
-        const {stdout} = await exec(`timeout ${parseFloat(timeLimit) + .5} ./${programPath} < ${inputFilePath}`);
+        await exec(`timeout ${parseFloat(timeLimit) + .5} ./${programPath} < ${inputFilePath} > ${outputFilePath}`);
         const time_after = Date.now();
         // used time computation is not very accurate but ok for now, should be updated in the future.
         const used_time = (time_after - time_before);
@@ -87,6 +91,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
             console.log("used time :", used_time);
             return {codeStatus: "Time Limit Exceeded"};
         }
+        const stdout = String(await readFile(outputFilePath));
         return {codeStatus : "Accepted", output : stdout, usedTime : used_time};
         // we should decide whether we will remove the sumbission code after or not
     }
