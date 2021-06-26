@@ -17,8 +17,8 @@ function validateSubmission(body) {
         lang: Joi.string().equal("C++"),// programming lanugage initially we support only C++
         timeLimit: Joi.number().min(.5).max(10).required(),// the timelimit to run code in seconds
         memoryLimit: Joi.number().min(1024).max(1024*1024), // number of KBs maximum is 1G isn't supported initially
-        sourceCode: Joi.string().max(100000).required(), // the source code to run
-        input: Joi.string().max(1000000).required()// the input to the program
+        sourceCode: Joi.string().allow('').max(100000).required(), // the source code to run
+        input: Joi.string().allow('').max(1000000).required()// the input to the program
     });
     return schema.validate(body);
 }
@@ -28,11 +28,11 @@ function validateChecker(body) {
         lang: Joi.string().equal("C++").required(),// programming lanugage initially we support only C++
         timeLimit: Joi.number().min(.5).max(10),// the timelimit to run code in seconds
         memoryLimit: Joi.number().min(1024).max(1024*1024), // number of KBs maximum is 1G isn't supported initially
-        sourceCode: Joi.string().max(100000).required(), // the source code to run
+        sourceCode: Joi.string().allow('').max(100000).required(), // the source code to run
         input: Joi.string().max(1000000).required(),// the input to the program
         // all obove is the same as problems.
-        userOutput: Joi.string().max(1000000).required(),// the answer from user
-        juryOutput: Joi.string().max(1000000).required()// the expected answer from jury
+        userOutput: Joi.string().allow('').max(1000000).required(),// the answer from user
+        juryOutput: Joi.string().allow('').max(1000000).required()// the expected answer from jury
     });
     return schema.validate(body);
 }
