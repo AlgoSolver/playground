@@ -3,6 +3,9 @@ const cors = require('cors')
 
 const app = express();
 app.use(cors())
+
+app.use( express.json({limit: 1 << 27}));// set limit to 128MB  
+
 app.use(express.json());
 const Joi = require("joi");
 const fs = require("fs");
@@ -12,13 +15,15 @@ const writeFile = util.promisify(fs.writeFile);
 const readFile = require("fs/promises").readFile;
 
 
+const IO_LIMIT = 5e7;
+
 function validateSubmission(body) {
     const schema = Joi.object({
         lang: Joi.string().equal("C++"),// programming lanugage initially we support only C++
         timeLimit: Joi.number().min(.5).max(10).required(),// the timelimit to run code in seconds
         memoryLimit: Joi.number().min(1024).max(1024*1024), // number of KBs maximum is 1G isn't supported initially
-        sourceCode: Joi.string().allow('').max(100000).required(), // the source code to run
-        input: Joi.string().allow('').max(1000000).required()// the input to the program
+        sourceCode: Joi.string().allow('').max(IO_LIMIT).required(), // the source code to run
+        input: Joi.string().allow('').max(IO_LIMIT).required()// the input to the program
     });
     return schema.validate(body);
 }
@@ -28,11 +33,11 @@ function validateChecker(body) {
         lang: Joi.string().equal("C++").required(),// programming lanugage initially we support only C++
         timeLimit: Joi.number().min(.5).max(10),// the timelimit to run code in seconds
         memoryLimit: Joi.number().min(1024).max(1024*1024), // number of KBs maximum is 1G isn't supported initially
-        sourceCode: Joi.string().allow('').max(100000).required(), // the source code to run
-        input: Joi.string().max(1000000).required(),// the input to the program
+        sourceCode: Joi.string().allow('').max(IO_LIMIT).required(), // the source code to run
+        input: Joi.string().max(IO_LIMIT).required(),// the input to the program
         // all obove is the same as problems.
-        userOutput: Joi.string().allow('').max(1000000).required(),// the answer from user
-        juryOutput: Joi.string().allow('').max(1000000).required()// the expected answer from jury
+        userOutput: Joi.string().allow('').max(IO_LIMIT).required(),// the answer from user
+        juryOutput: Joi.string().allow('').max(IO_LIMIT).required()// the expected answer from jury
     });
     return schema.validate(body);
 }
@@ -82,14 +87,12 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
     const time_before = Date.now();
     // give extra .5 second to make sure that the exit was made by TLE not RTE
     try{
-        console.log("Time limit :", timeLimit);
         await exec(`timeout ${parseFloat(timeLimit) + .5} ./${programPath} < ${inputFilePath} > ${outputFilePath}`);
         const time_after = Date.now();
         // used time computation is not very accurate but ok for now, should be updated in the future.
         const used_time = (time_after - time_before);
         // used time is in ms while timeLimit is in seconds
         if(used_time > timeLimit * 1000){
-            console.log("used time :", used_time);
             return {codeStatus: "Time Limit Exceeded"};
         }
         const stdout = String(await readFile(outputFilePath));
@@ -211,6 +214,7 @@ app.listen( PORT, () => console.log(`App ${SERVER_ID} => Up and running on ${POR
 // just for testing
 const SERVER_ID = process.env.SERVER_ID;
 const data = require('./data.json');
+const { json } = require("express");
 app.get('/test', (req, res) => {
     res.send(data);
 });
