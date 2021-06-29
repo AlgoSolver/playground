@@ -9,3 +9,7 @@ docker-compose*
 README.md
 LICENSE
 .vscode
+npm-debug
+.github
+diagram.jpeg
+run_docker.sh
