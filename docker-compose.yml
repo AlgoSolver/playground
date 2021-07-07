@@ -2,7 +2,11 @@ version: '3.9'
 
 services: 
     nginx_lb:
-        image: s403o/playground-lb
+        build: 
+            context: .
+            dockerfile: Dockerfile.lb
+            args:
+                buildno: 1
         ports: 
             - 8080:8080
 
