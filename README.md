@@ -1,24 +1,32 @@
-# playground
+
   [![CI](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/node.js.yml)  [![Docker Image CI/CD](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml/badge.svg)](https://github.com/AlgoSolver/playground/actions/workflows/docker-image.yml) [![Codeship Status for AlgoSolver/playground](https://app.codeship.com/projects/17efac47-03ad-4dcb-95dc-4d5a7643a8e8/status?branch=master)](https://app.codeship.com/projects/447851)
   
-***The API for running code submitted by user, currently supports C++ only***
+## Install & Run Locally using docker-compose with Load Balancer feature
+[playground.sh](https://github.com/AlgoSolver/playground/blob/master/scripts/playground.sh)
+```sh
+./playground.sh
+```
+### Simple diagram
+![LB](diagram.jpeg)
 
-# calling the API 
-***send*** post request to http://localhost:3000/api/runCode with Body as JSON  
+## calling the API 
+> ***supports C++ only***
+
+***send*** `POST` request to http://localhost:3000/api/runCode with Body as JSON  
 - Attributes:  
-  1. lang => the language of the source code currently we support only "C++"  
-  2. timeLimit => the limit on time to run your code in seconds.  
-  3. sourceCode => the source code you wan't to run.  
-  4. input => the input to the program.  
+  1. **lang =>** the language of the source code currently we support only `C++`  
+  2. **timeLimit =>** the limit on time to run your code in seconds.  
+  3. **sourceCode =>** the source code you wan't to run.  
+  4. **input =>** the input to the program.  
   
 ***response*** JSON object with the folowing 
 - Atributes:
-  1. codeStatus: "Accepted" or "Compilation Error!" or "Run Time Error!" or "Time Limit Exceeded!"
-  2. other attributes only if codeStatus is "Accepted"
-  3. output => the output of you program.
-  4. usedTime => the time your program used in ms.
+  1. codeStatus: `Accepted` or `Compilation Error!` or `Run Time Error!` or `Time Limit Exceeded!`
+  2. other attributes only if codeStatus is `Accepted`
+  3. **output =>** the output of you program.
+  4. **usedTime =>** the time your program used in `ms`.
   
-# example request body: 
+## example request body: 
 ```json
 {
     "lang": "C++",
@@ -28,7 +36,7 @@
 }
 ```
   
-# response body :
+## response body :
 ```json
 {
     "codeStatus": "Accepted",
@@ -37,14 +45,14 @@
 }
 ```
 
-# running checker code
+## running checker code
 send post request to http://localhost:3000/api/runChecker with body containing the checker source code, input, userOutput, juryOutput
 note source code should read input, userOutput, juryOutput from files with same name.
 response will be JSON object
-codeStatus: "Accepted" or "Compilation Error!" or "Run Time Error!" or "Time Limit Exceeded!"
-response will be the same as for calling the runCode api.
+codeStatus: `Accepted` or `Compilation Error!` or `Run Time Error!` or `Time Limit Exceeded!`
+response will be the **same as for calling the `runCode api`.**
 
-# Example Checker Request
+## Example Checker Request
 ```json
 {
     "lang": "C++",
@@ -55,7 +63,7 @@ response will be the same as for calling the runCode api.
 }
 ```
 
-#Response Body 
+## Response Body 
 ```json
 {
     "codeStatus": "Accepted",
@@ -63,6 +71,3 @@ response will be the same as for calling the runCode api.
     "usedTime": 4
 }
 ```
-
-# Load Balancer Diagram 
-![LB](diagram.jpeg)
