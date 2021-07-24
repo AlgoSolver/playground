@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require('cors')
-
+const morgan = require('morgan');
 const app = express();
-app.use(cors())
+app.use(cors());
+app.use(morgan());
 
 app.use( express.json({limit: 1 << 27}));// set limit to 128MB  
 
@@ -16,6 +17,8 @@ const readFile = require("fs/promises").readFile;
 
 
 const IO_LIMIT = 5e7;
+
+const CPP_COMPILATION_FLAGS = "g++ -std=c++17 -O2";// use optimization version O2
 
 function validateSubmission(body) {
     const schema = Joi.object({
@@ -75,7 +78,7 @@ async function runCPPCode(sourceCode, input, timeLimit, memoryLimit = 512){//mem
 
     try{
         // Compile the C++ Code with a maximum of 3 secnods in compilation
-        await exec(`timeout 3 g++ ${codePath} -o ${programPath}`);// compile
+        await exec(`timeout 3 ${CPP_COMPILATION_FLAGS} ${codePath} -o ${programPath}`);// compile
     }
     catch(err) {
         if(err){
@@ -142,7 +145,7 @@ async function runCPPChecker(sourceCode, input, userOutput, juryOutput, timeLimi
 
     try{
         // Compile the C++ Code with a maximum of 3 secnods in compilation
-        await exec(`timeout 3 g++ ${codePath} -o ${checkerProgram}`);// compile
+        await exec(`timeout 3 ${CPP_COMPILATION_FLAGS} ${codePath} -o ${checkerProgram}`);// compile
     }
     catch(err) {
         if(err){
