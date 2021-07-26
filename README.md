@@ -7,7 +7,7 @@
 ./playground.sh
 ```
 ### Simple diagram
-![LB](diagram.jpeg)
+![LB](diagram.jpeg) 
 
 ## calling the API 
 > ***supports C++ only***
